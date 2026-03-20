@@ -1,0 +1,117 @@
+{
+  "gpt_researcher_url": {
+    "description": "GPT-Researcher 服务地址",
+    "type": "string",
+    "default": "http://localhost:8000",
+    "hint": "gpt-researcher 后端服务的 HTTP 地址，确保服务正在运行"
+  },
+  "trigger_keywords": {
+    "description": "触发研究的关键词",
+    "type": "list",
+    "default": ["研究", "deepresearch"],
+    "hint": "当消息中包含这些关键词时，将触发研究任务（仅在启用关键词触发时生效）"
+  },
+  "enable_keyword_trigger": {
+    "description": "启用关键词触发",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，消息中包含触发关键词时会自动触发研究任务；禁用后只能通过命令触发"
+  },
+  "command_name": {
+    "description": "研究命令名称",
+    "type": "string",
+    "default": "research",
+    "hint": "注册的命令名称，例如设置为 'research' 后使用 /research <主题> 触发"
+  },
+  "report_format": {
+    "description": "研究报告输出格式",
+    "type": "string",
+    "options": ["pdf", "docx", "markdown"],
+    "default": "pdf",
+    "hint": "选择生成报告的格式：PDF（推荐）、DOCX（Word文档）、Markdown（原始格式）"
+  },
+  "progress_report_frequency": {
+    "description": "进度回报频率（百分比）",
+    "type": "int",
+    "default": 10,
+    "hint": "每完成多少百分比回报一次进度，例如 10 表示每完成10%回报一次",
+    "slider": {
+      "min": 1,
+      "max": 50,
+      "step": 1
+    }
+  },
+  "progress_report_min_interval_seconds": {
+    "description": "进度回报最小间隔（秒）",
+    "type": "int",
+    "default": 60,
+    "hint": "即使进度达到报告频率，也至少间隔这么多秒才回报一次，避免刷屏",
+    "slider": {
+      "min": 10,
+      "max": 300,
+      "step": 5
+    }
+  },
+  "deep_research_enabled": {
+    "description": "启用深度研究模式",
+    "type": "bool",
+    "default": true,
+    "hint": "如果启用，将使用 gpt-researcher 的 deep research 模式进行更深入的研究"
+  },
+  "max_research_time_minutes": {
+    "description": "最大研究时间（分钟）",
+    "type": "int",
+    "default": 30,
+    "hint": "研究任务的最大运行时间，超时后将强制终止",
+    "slider": {
+      "min": 5,
+      "max": 120,
+      "step": 5
+    }
+  },
+  "whitelist_enabled": {
+    "description": "启用白名单检查",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，只有白名单中的用户/群组才能触发研究任务"
+  },
+  "whitelist": {
+    "description": "白名单列表",
+    "type": "list",
+    "default": [],
+    "hint": "允许触发研究任务的用户ID或群组ID（支持统一消息源格式，如 'qq:GroupMessage:123456' 或简单ID '123456'）"
+  },
+  "friend_only": {
+    "description": "仅限好友触发",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，只有私聊（好友）消息才能触发研究任务"
+  },
+  "gpt_researcher_config": {
+    "description": "GPT-Researcher 高级配置",
+    "type": "dict",
+    "hint": "传递给 gpt-researcher 的额外配置参数",
+    "template_schema": {
+      "report_type": {
+        "name": "报告类型",
+        "description": "研究报告类型",
+        "type": "string",
+        "options": ["research_report", "resource_report", "outline_report", "deep"],
+        "default": "deep"
+      },
+      "report_format": {
+        "name": "报告格式（学术）",
+        "description": "学术报告格式",
+        "type": "string",
+        "options": ["APA", "MLA", "IEEE", "Chicago"],
+        "default": "APA"
+      },
+      "language": {
+        "name": "语言",
+        "description": "研究报告语言",
+        "type": "string",
+        "default": "chinese"
+      }
+    }
+  }
+}
