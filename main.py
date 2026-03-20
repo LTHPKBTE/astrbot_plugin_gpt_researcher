@@ -94,7 +94,7 @@ class GPTResearcherPlugin(Star):
             await self.cancel_research_task(task_id)
         logger.info("GPT-Researcher 插件已终止")
 
-    @filter.on_message()
+    @filter.event_message_type(filter.EventMessageType.ALL)
     async def handle_message(self, event: AstrMessageEvent):
         """处理所有消息，检测触发关键词（仅在启用关键词触发时生效）"""
         if not self.enable_keyword_trigger:
