@@ -89,28 +89,29 @@
   },
   "gpt_researcher_config": {
     "description": "GPT-Researcher 高级配置",
-    "type": "dict",
+    "type": "object",
     "hint": "传递给 gpt-researcher 的额外配置参数",
-    "template_schema": {
+    "default": {},
+    "items": {
       "report_type": {
-        "name": "报告类型",
         "description": "研究报告类型",
         "type": "string",
         "options": ["research_report", "resource_report", "outline_report", "deep"],
-        "default": "deep"
+        "default": "deep",
+        "hint": "选择研究报告类型：research_report（标准研究报告）、resource_report（资源报告）、outline_report（大纲报告）、deep（深度研究）"
       },
       "report_format": {
-        "name": "报告格式（学术）",
         "description": "学术报告格式",
         "type": "string",
         "options": ["APA", "MLA", "IEEE", "Chicago"],
-        "default": "APA"
+        "default": "APA",
+        "hint": "选择学术引用格式"
       },
       "language": {
-        "name": "语言",
         "description": "研究报告语言",
         "type": "string",
-        "default": "chinese"
+        "default": "chinese",
+        "hint": "研究报告的输出语言"
       }
     }
   }

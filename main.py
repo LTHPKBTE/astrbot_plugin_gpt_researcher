@@ -198,7 +198,8 @@ class GPTResearcherPlugin(Star):
         self.active_tasks.add(task_id)
         
         # 发送确认消息
-        await event.reply(f"研究请求接收，关键词: {query[:50]}...")
+        chain = MessageChain([Plain(f"研究请求接收，关键词: {query[:50]}...")])
+        await self.context.send_message(event.unified_msg_origin, chain)
         
         # 启动异步研究任务
         asyncio.create_task(self._execute_research_task(task))
@@ -267,7 +268,9 @@ class GPTResearcherPlugin(Star):
             if percent >= 100:
                 message = "研究完成，正在撰写报告文件，这可能需要十分钟..."
             
-            await task.event.reply(message)
+            # 使用 context.send_message 发送主动消息
+            chain = MessageChain([Plain(message)])
+            await self.context.send_message(task.event.unified_msg_origin, chain)
             task.last_progress_report_time = now
             task.last_progress_percent = percent
             logger.info(f"研究任务 {task.task_id} 进度报告: {percent}%")
@@ -325,8 +328,8 @@ class GPTResearcherPlugin(Star):
             
             # 发送文件
             file_comp = File(name=filename, file=temp_file)
-            chain = MessageChain([Plain("📄 研究完成！报告已生成文件："), file_comp])
-            await task.event.send(chain)
+            chain = MessageChain([Plain("研究完成！报告文件："), file_comp])
+            await self.context.send_message(task.event.unified_msg_origin, chain)
             
             logger.info(f"研究任务 {task.task_id} 报告已通过文件发送: {filename}")
             
@@ -346,7 +349,9 @@ class GPTResearcherPlugin(Star):
         """发送错误报告（仅文本）"""
         try:
             message = f"研究任务失败\n主题: {task.query}\n错误: {error_msg}"
-            await task.event.reply(message)
+            # 使用 context.send_message 发送主动消息
+            chain = MessageChain([Plain(message)])
+            await self.context.send_message(task.event.unified_msg_origin, chain)
             logger.error(f"研究任务 {task.task_id} 错误报告已发送: {error_msg}")
         except Exception as e:
             logger.error(f"发送错误报告失败: {e}")
@@ -368,7 +373,7 @@ class GPTResearcherPlugin(Star):
         permission_ok, reason = self._check_permission(event)
         if not permission_ok:
             logger.info(f"研究请求被拒绝: {reason}")
-            yield event.plain_result(f"❌ 研究请求被拒绝: {reason}")
+            yield event.plain_result(f"研究请求被拒绝: {reason}")
             return
 
         if not query or query.strip() == "":
@@ -376,8 +381,6 @@ class GPTResearcherPlugin(Star):
             return
 
         query = query.strip()
-        # 发送确认消息
-        yield event.plain_result(f"🔍 收到研究命令，主题: {query}\n开始研究...")
 
         # 启动研究任务
         await self.start_research_task(event, query)
