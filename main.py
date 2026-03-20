@@ -3,7 +3,7 @@ from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
 from astrbot.api import AstrBotConfig
 from astrbot.core.message.components import File, Plain
-from astrbot.core.message.message_chain import MessageChain
+from astrbot.core.message.message_event_result import MessageChain
 from astrbot.core.platform.message_type import MessageType
 import asyncio
 import time
